@@ -10,7 +10,9 @@
 
     var figure = "";
     var accumulated = 0;
+    var first_operation = true;
     var add = false;
+    var remainder = false;
 
     function display_numbers(number) {
       document.getElementById("display").value = figure + number;
@@ -18,17 +20,49 @@
     }
 
     function sum() {
-      accumulated = accumulated + parseInt(figure);
-      document.getElementById("display").value = accumulated;
+      if (remainder) {
+        accumulated = accumulated - parseInt(figure);
+        document.getElementById("display").value = accumulated;
+
+      } else {
+        accumulated = accumulated + parseInt(figure);
+        document.getElementById("display").value = accumulated;
+
+      }
       figure = "";
       add = true;
+      remainder = false;
+      first_operation = false;
     }
+    function substract() {
+      if (first_operation == false) {
+        if (add) {
+          accumulated = accumulated + parseInt(figure);
+          document.getElementById("display").value = accumulated;
+
+        } else {
+          accumulated = accumulated - parseInt(figure);
+          document.getElementById("display").value = accumulated;
+
+        }
+      } else {
+        accumulated = parseInt(figure);
+        first_operation = false;
+      }
+      figure = "";
+      add = false;
+      remainder = true;
+
+    }
+
     function result() {
       if (add) {
         document.getElementById("display").value = accumulated + parseInt(figure);
+      } else if (remainder) {
+        document.getElementById("display").value = accumulated - parseInt(figure);
       }
-
-
+      accumulated = parseInt(document.getElementById("display").value);
+      figure = 0;
     }
 
   </script>
@@ -44,7 +78,8 @@
     </tr>
     <tr>
       <td width="26%"><input name="button" type="button" class="numero" id="button" value="+" onCLick="sum()"></td>
-      <td width="21%"><input name="button2" type="button" class="numero" id="button2" value="-"></td>
+      <td width="21%"><input name="button2" type="button" class="numero" id="button2" value="-" onclick="substract()">
+      </td>
       <td width="21%"><input name="button3" type="button" class="numero" id="button3" value="*"></td>
       <td width="32%"><input name="button4" type="button" class="numero" id="button4" value="/"></td>
     </tr>
